@@ -54,4 +54,9 @@ class Database:
 
 
     async def get_admins(self):
-        ...
+        async with aiosqlite.connect(self.db_file) as db:
+            resp = await db.execute('''
+                SELECT * FROM users WHERE status != 0
+            ''')
+
+            return [(row[1], row[2], row[3]) for row in await resp.fetchall()]

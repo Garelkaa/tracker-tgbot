@@ -20,8 +20,10 @@ class Admins:
     
 
     async def register_handlers(self):
-        ...
+        self.dp.callback_query(F.data == 'change_admins')(self.get_admins_bot)
 
 
     async def get_admins_bot(self, call: CallbackQuery):
-        ...
+        resp = await self.db.get_admins()
+        
+        await call.message.answer("test", reply_markup=await inline.admins_pages(admins=resp, page=0))

@@ -12,4 +12,7 @@ class Mybot:
         self.bot = Bot(token=cfg.TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
         self.dp = Dispatcher()
         self.db = Database('db.db')
+
+
+bot_instance = Mybot()
         

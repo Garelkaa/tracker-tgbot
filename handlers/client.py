@@ -10,44 +10,8 @@ from utils.user_state import GetTrack
 from config import sub_channel_id, sub_channel_link
 
 from datetime import datetime, timedelta
-
-
-status_dict = {
-    0: {
-                        "title": 'Оформление',
-                        "description": 'Ваш заказ создан, ожидает обработки данных',
-                    },
-
-                    1: {
-                        "title": 'Сортировка',
-                        "description": 'Данные переданы на склад, товар проходит проверку и подготавливается к отправке (2-5 дней)'
-                    },
-
-                    2: {
-                        "title": 'Отправка',
-                        "description": 'Заказ отправлен в РФ'
-                    },
-
-                    3: {
-                        "title": 'Таможенный контроль',
-                        "description": 'Груз прибыл в Россию, проходит таможенный контроль'
-                    },
-
-                    4: {
-                        "title": 'Таможенное оформление завершено',
-                        "description": 'Товар передан в логистическую компанию по России',
-                    },
-
-                    5: {
-                        "title": 'Сортировка',
-                        "description": 'Товар проходит сортировку на Московском складе, для дальнейшей отправки на Ваш адрес',
-                    },
-
-                    6: {
-                        "title": 'Ожидает отправки на Ваш адрес',
-                        "description": 'Товар готовят к отправке с нашего склада в Москве'
-                    }
-                }
+from utils.filters.is_admin import IsAdmin
+from utils.status import status_dict
 
 
 class Client:
@@ -58,7 +22,7 @@ class Client:
     
     
     async def register_handler(self):
-        self.dp.message(CommandStart())(self.start) 
+        self.dp.message(CommandStart(), IsAdmin())(self.start) 
         self.dp.callback_query(F.data == "why_order")(self.why_order)
         self.dp.callback_query(F.data == 'done_sub')(self.done_sub)
         self.dp.callback_query(F.data == 'get_info')(self.info_order)
